@@ -1,0 +1,96 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd 
+        http://www.springframework.org/schema/context
+		http://www.springframework.org/schema/context/spring-context.xsd">
+        
+	<!-- 加入context 命名空间 -->
+	
+    <bean id="myUser" class="com.yc.spring.bbs.bean.User">
+    	<property name="uname" value="武松"></property>
+    	<property name="upass" value="abc123"></property>
+    	<property name="head" value="20.gif"></property>
+    	<property name="gender" value="1"></property>
+    </bean>
+    
+     <bean id="myUser1" class="com.yc.spring.bbs.bean.User" primary="true">
+    	<property name="uname" value="石秀"></property>
+    	<property name="upass" value="XYZ890"></property>
+    	<property name="head" value="345.gif"></property>
+    	<property name="gender" value="0"></property>
+    </bean>
+    
+    <bean id="page1" class="com.yc.spring.bbs.bean.Page">
+    	<property name="total" value="100"></property>
+    	<property name="rows">
+    		<list>
+    			<value>湖南</value>
+    			<value>广东</value>
+    			<value>333</value>
+    			<value type="java.lang.Integer">100</value>
+    		</list>
+    	</property>
+    </bean>
+    
+    <bean id="page2" class="com.yc.spring.bbs.bean.Page">
+    	<property name="total" value="200"></property>
+    	<property name="rows">
+    		<list>
+    			<bean class="com.yc.spring.bbs.bean.User">
+    				<property name="uname" value="华荣"></property>
+    			</bean>
+    			<map key-type="java.lang.String" value-type="java.lang.Object">
+    				<entry key="0734" value="衡阳"></entry>
+    				<entry key="0731" value="长沙"></entry>
+    			</map>
+    			<set>
+    				<value type="java.lang.Integer">100</value>
+    				<ref bean="myUser"/>
+    				<value>呵呵</value>
+    			</set>
+    		</list>
+    	</property>
+    </bean>
+    
+    <bean id="board" class="com.yc.spring.bbs.bean.Board">
+    	<constructor-arg name="boardid" value="100" type="java.lang.Integer"></constructor-arg>
+    	<constructor-arg name="boardname" value="jsp" type="java.lang.String"></constructor-arg>
+    	<constructor-arg name="parentid" value="200" type="java.lang.Integer"></constructor-arg>
+    	<property name="parent">
+    		<bean class="com.yc.spring.bbs.bean.Board">
+		    	<constructor-arg name="boardid" value="300" type="java.lang.Integer"></constructor-arg>
+		    	<constructor-arg name="boardname" value="java" type="java.lang.String"></constructor-arg>
+		    	<constructor-arg name="parentid" value="" type="java.lang.Integer"></constructor-arg>
+		    </bean>
+    	</property>
+    	<property name="topicList">
+    		<list>
+    			<null></null>
+    			<null></null>
+    			<null></null>
+    			<bean class="com.yc.spring.bbs.bean.Topic">
+    				<property name="uid" value="400"></property>
+   				</bean>
+   				<null></null>
+    		</list>
+    	</property>
+    </bean>
+    
+    <!-- 松耦合 -->
+    <!-- <bean id="uDao" class="com.yc.spring.bbs.dao.UserDao"></bean> -->
+	
+	<!-- 
+		xml 方式的自动装配 autowire
+		byName 根据名称属性名 自动查找 容器中的对象 uDao
+		byType 根据类型
+		constructor 根据构造器自动装配
+	 -->
+	<!-- <bean id="userBiz" class="com.yc.spring.bbs.biz.UserBiz" autowire="byName">
+	
+	</bean> -->
+	
+	<context:component-scan base-package="com.yc.spring"></context:component-scan>
+</beans>

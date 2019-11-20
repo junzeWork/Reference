@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean id="accountFactory" class="com.yc.spring.bank.bean.Factory"></bean>
+	
+	<!-- scope  作用域: 单例(默认)
+		 singleton  单例
+		 prototype  原型 getBean  都会返回一个新的对象
+		 request	每次请求作用域是同一个对象
+		 session	每次会话作用域是同一个对象
+		 
+	-->
+    <bean id="account" class="com.yc.spring.bank.bean.Account" scope="singleton" primary="true">
+    </bean>
+
+    <bean id="accountmodel" class="com.yc.spring.bank.bean.Account" abstract="true">
+    </bean>
+    
+    <bean id="account1" factory-bean="accountFactory" factory-method="accountFactory" scope="prototype">
+    </bean>
+    
+    <bean id="account2" class="com.yc.spring.bank.bean.Account" factory-method="getInstance">
+    </bean>
+    
+    <bean id="account3" class="com.yc.spring.bank.bean.Account" factory-method="getInstance">
+    </bean>
+    
+    <!-- 原型 + 工厂方法
+    	原型:getBean  都会返回一个新的对象，如果没有配置工厂方法，每次new对象 
+     -->
+    <bean id="account4" class="com.yc.spring.bank.bean.Factory" factory-method="create1" scope="prototype" >
+    </bean>
+    
+</beans>
