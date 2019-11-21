@@ -17,11 +17,11 @@
 		<aop:pointcut expression="execution(* com.yc.spring.bbsb.dao.*.select*(..))" id="select"/>
 		<aop:pointcut expression="execution(* com.yc.spring.bbsb.biz.*.*(..))" id="all"/>
 		<aop:aspect id="myAspect" ref="logAspect" order="1">
-			<aop:before method="log" pointcut-ref="all" arg-names="jp"/>
-			<aop:after method="after" pointcut-ref="select" arg-names="jp"/>
-			<aop:after-returning method="afterReturning" arg-names="jp,ret" returning="ret" pointcut-ref="select"/>
-			<aop:after-throwing method="afterThrowing" arg-names="jp,e" throwing="e" pointcut-ref="select"/>
-			<aop:around method="around" arg-names="pjp" pointcut-ref="all"/>
+			<aop:before method="log" pointcut-ref="all" />
+			<aop:after method="after" pointcut-ref="select" />
+			<aop:after-returning method="afterReturning"  returning="ret" pointcut-ref="select"/>
+			<aop:after-throwing method="afterThrowing"  throwing="e" pointcut-ref="select"/>
+			<aop:around method="around"  pointcut-ref="all"/>
 		</aop:aspect>
 	</aop:config>
 	<bean id="userDao" class="com.yc.spring.bbsb.dao.UserDao" scope="prototype">

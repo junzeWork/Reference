@@ -43,6 +43,7 @@ public class LogAspect {
 	public void log(JoinPoint jp) {
 		jp.getSignature(); // 方法签名
 		jp.getArgs();// 获取所有参数
+		
 		System.out.println("前置增强===》方法签名：" + jp.getSignature());
 		System.out.println("前置增强===》获取所有参数：" + Arrays.toString(jp.getArgs()));
 	}
