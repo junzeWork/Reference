@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>首页</title>
+<link rel="stylesheet" type="text/css" href="styles.css">
+</head>
+<body>
+	<form name="favForm" method="post"
+		action="/cang/fav.do;jsessionid=FF8C0487A99814B144B07E5633524A0F">
+		<input type="hidden" name="op" value="toList" />
+
+		<div class="banner" valign="top">搜藏</div>
+
+		<table cellspacing="0" cellpadding="0" border="0">
+			<tr>
+				<td style="text-align: right;" valign="top">
+					<!-- 左边Tag列表 -->
+					<div class="left_labels">
+
+
+						<table class="labels_table" cellspacing="0" cellpadding="0"
+							border="0">
+							<tr>
+								<td onclick="select(this)"><a href="" onclick="add();" style="font-weight: bold;">添加书签</a></td>
+							</tr>
+							<tr>
+								<td class="selected_label" onclick="select(this)"><a href="javascript:findAll()">全部</a></td>
+							</tr>
+							<tr>
+								<td onclick="select(this)"><a href="javascript:findBynotTagName()">未分类</a></td>
+							</tr>
+						</table>
+					</div>
+				</td>
+				<td>
+					<!-- 右边fav内容 -->
+					<div class="content_links">
+						
+						
+					</div>
+				</td>
+			</tr>
+		</table>
+
+	</form>
+<script type="text/javascript" src="js/jquery.min.js"></script>
+<script type="text/javascript">
+
+//移动选择
+function select(a){
+	$('.selected_label').removeClass('selected_label');
+	$(a).addClass('selected_label');
+}
+
+//默认加载所有的分类信息
+$(function (){
+	$.post('findAll',function(data){
+		console.log(data);
+		showTags(data);
+	},'json');
+	findAll();
+});
+
+//全部
+function findAll(){
+	$.post('favFindAll',function(data){
+		showFavorite(data);
+	},'json');
+}
+
+//显示收藏信息
+function showFavorite(data){
+	console.log(data);
+	var str='';
+	for(var i=0;i<data.length;i++){
+		str+='<div style="padding: 6px 10px;">'
+			+'<div><a href="http://'+data[i].fUrl+'"'
+			+'style="color: blue; font-size: 18px;" target="_blank">'+data[i].fLabel+'</a>'
+			+'</div><div style="color: black; font-size: 16px;">'+data[i].fTags+'</div>'
+			+data[i].fDesc
+			+'<div style="color: green; font-size: 14px;">'+data[i].fUrl+'</div></div>';
+	}
+	$('.content_links').html(str);
+}
+
+//显示标签
+function showTags(arr){
+	var str='';
+	for(var i=0;i<arr.length;i++){
+		str+='<tr><td onclick="select(this)"><a href="javascript:findByName(\''+arr[i].tName+'\')">'+arr[i].tName+'</a></td></tr>';
+	}
+	str+='<tr><td onclick="select(this)"><a style="font-weight:bold;" href="javascript:findToCloud()">云图</a></td></tr>';
+	$('.labels_table').append(str);
+}
+
+function findByName(tName){
+	$.post('findByName',{fTags:tName},function(data){
+		showFavorite(data);
+	},'json');
+}
+
+//未分类
+function findBynotTagName(){
+	$.post('findBynotTagName',function(data){
+		showFavorite(data);
+	},'json');
+}
+
+function findToCloud(){
+	$.post('toCloud',function(data){
+		showCloud(data);
+	},'json');
+}
+
+//云图
+function showCloud(data){
+	var str='';
+	var allSize=0;
+	for(var i=0;i<data.length;i++){
+		allSize+=data[i].fList.length;
+	}
+	for(var i=0;i<data.length;i++){
+		var size=data[i].fList.length;
+		var fontSize=100*(size/allSize);
+		str+='&nbsp;&nbsp;&nbsp;<a href="javascript:findByName(\''+data[i].tName+'\')"'
+			+'style="font-size: '+fontSize+'px;">'+data[i].tName+'</a>';
+	}
+	$('.content_links').html(str);
+}
+
+//添加
+function add(){
+	window.open ('favorite.html', 'newwindow', 
+	'height=300, width=400, toolbar=no, menubar=no, scrollbars=no, resizable=no,location=no, status=no');
+}
+
+
+</script>
+</body>
+</html>
