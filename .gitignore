@@ -1,2 +1,4 @@
 *.class
 *.properties
+hw-spring-ioc/target/classes/META-INF/maven/com.yc/hw-spring-ioc/pom.properties
+*.properties
